@@ -10,7 +10,7 @@ class Controller(object):
     def modeling(self, train, test) -> object:
         service = self.service
         this = self.preprocess(train, test)
-        this.label = service.create_lable(this)
+        this.label = service.create_label(this)
         this.train = service.create_train(this)
         return this
 

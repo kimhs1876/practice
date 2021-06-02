@@ -84,7 +84,11 @@ The top 5 inferior data are <bound method NDFrame.tail of      PassengerId  Surv
 888          889         0       3  ...  23.4500   NaN         S
 889          890         1       1  ...  30.0000  C148         C
 890          891         0       3  ...   7.7500   NaN         Q
+<<<<<<< HEAD
 
 
+=======
+'''
+>>>>>>> 5e545e8e553b5ed92d7980e1a9b68ccd017a4674
 
 

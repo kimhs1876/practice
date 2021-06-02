@@ -16,9 +16,10 @@ class Service(object):
         this.fname = payload
         return pd.read_csv(this.context + this.fname)
 
-    @staticmethod
+    @staticmethod # 함수이름과 동작이 정반대
     def create_train(this) -> object:
         return this.train.drop('Survived', axis = 1)
+<<<<<<< HEAD
 
     @staticmethod
     def create_label(this) -> object:
@@ -67,6 +68,56 @@ class Service(object):
         return this
 
     @staticmethod
+=======
+
+    @staticmethod
+    def create_label(this) -> object:
+        return this.train['Survived']
+
+    @staticmethod
+    def drop_feature(this, *feature) -> object:
+        for i in feature:
+            this.train = this.train.drop([i], axis=1)
+            this.test = this.test.drop([i], axis=1)
+        return this
+
+    @staticmethod
+    def embarked_nominal(this) -> object:
+        this.train = this.train.fillna({'Embarked':'S'})
+        this.test = this.test.fillna({'Embarked':'S'})
+        this.train['Embarked'] =  this.train['Embarked'].map({'S':1,'C':2,'Q':3})
+        this.test['Embarked'] =  this.test['Embarked'].map({'S':1,'C':2,'Q':3})
+        return this
+
+    @staticmethod
+    def fare_ordinal(this) -> object:
+        this.test['Fare'] = this.test['Fare'].fillna(1)
+        this.train['FareBand'] = pd.qcut(this.train['Fare'], 4)
+        # print(f'qcut 으로 bins 값 설정 {this.train["FareBand"].head()}')
+        bins = [-1, 8, 15, 31, np.inf]
+        this.train = this.train.drop(['FareBand'], axis=1)
+        for these in [this.train, this.test]:
+            these['FareBand'] = pd.cut(these['Fare'], bins=bins, labels=[1, 2, 3, 4])
+        return this
+
+    @staticmethod
+    def title_norminal(this) -> object:
+        combine = [this.train, this.test]
+        for dataset in combine:
+            dataset['Title'] = dataset.Name.str.extract('([A-Za-z]+)\.', expand=False)
+        for dataset in combine:
+            dataset['Title'] = dataset['Title'].replace(['Capt', 'Col', 'Don', 'Dr', 'Major', 'Rev', 'Jonkheer', 'Dona'], 'Rare')
+            dataset['Title'] = dataset['Title'].replace(['Countess', 'Lady', 'Sir'], 'Royal')
+            dataset['Title'] = dataset['Title'].replace('Mlle', 'Mr')
+            dataset['Title'] = dataset['Title'].replace('Ms', 'Miss')
+            dataset['Title'] = dataset['Title'].replace('Mme', 'Rare')
+            title_mapping = {'Mr': 1, 'Miss': 2, 'Mrs': 3, 'Master': 4, 'Royal': 5, 'Rare': 6}
+            dataset['Title'] = dataset['Title'].fillna(0)
+            dataset['Title'] = dataset['Title'].map(title_mapping)
+        return this
+
+    @staticmethod
+>>>>>>> 5e545e8e553b5ed92d7980e1a9b68ccd017a4674
     def gender_norminal(this) -> object:
         gender_mapping = {'male': 0, 'female': 1}
         for these in [this.train, this.test]:
@@ -108,4 +159,9 @@ class Service(object):
                                          random_state=0),
                                 n_jobs=1,
                                 scoring='accuracy')
+<<<<<<< HEAD
         return round(np.mean(score) * 100, 2)
+=======
+        return round(np.mean(score) * 100, 2)
+
+>>>>>>> 5e545e8e553b5ed92d7980e1a9b68ccd017a4674

@@ -46,4 +46,8 @@ class Dataset(object):
     def label(self) -> object: return self._label
 
     @label.setter
+<<<<<<< HEAD
     def label(self, label): self._label = label
+=======
+    def label(self, label): self._label = label
+>>>>>>> 5e545e8e553b5ed92d7980e1a9b68ccd017a4674
